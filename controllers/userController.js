@@ -36,7 +36,7 @@ const userAdd = async (req, resp) => {
 
 const userList = async (req, res) => {
 
-    let data = await Users.users.find();
+    let data = await Users.users.find({resultPrizeVal:1});
     if(!data){
         res.status(400).json({"status":"400","message":"data not found"});
     }

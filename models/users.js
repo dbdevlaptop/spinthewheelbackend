@@ -18,8 +18,21 @@ var userSchema = new mongoose.Schema({
         }
     ],
     
-    
-    
+},{
+    timestamps:true
+})
+
+var spinSchema = new mongoose.Schema({
+    totalSpin:String,
+    totalWinner:String,
+},{
+    timestamps:true
+})
+
+var spinAdmin = new mongoose.Schema({
+    name:String,
+    email:String,
+    password:String,
 },{
     timestamps:true
 })
@@ -38,4 +51,7 @@ userSchema.methods.getAuthToken = async function(data){
 }
 
 let users = conn.model('users',userSchema)
-module.exports = {users};
+
+let spin = conn.model('spindata',spinSchema)
+let admin = conn.model('admin',spinAdmin)
+module.exports = {users, spin, admin};

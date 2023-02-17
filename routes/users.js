@@ -22,7 +22,11 @@ router.get('/', (req , resp)=>{
 
 router.post('/add', userCtrl.userAdd);
 
-
 router.get('/list', userCtrl.userList);
+
+router.post('/spindata', userCtrl.spindata);
+router.get('/spindatalist', userCtrl.spindatalist);
+
+router.post('/spinadmin', userCtrl.spinadmin);
 
 module.exports = router;

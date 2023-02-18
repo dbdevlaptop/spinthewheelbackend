@@ -9,6 +9,7 @@ var userSchema = new mongoose.Schema({
     prize:String,
     mobile:String,
     resultPrizeVal:Number,
+    date:String,
     tokens:[
         {
             token:{

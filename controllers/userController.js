@@ -1,5 +1,16 @@
 const Users = require('../models/users');
 
+
+let today = new Date();
+let yyyy = today.getFullYear();
+let mm = today.getMonth() + 1; // Months start at 0!
+let dd = today.getDate();
+
+if (dd < 10) dd = '0' + dd;
+if (mm < 10) mm = '0' + mm;
+
+let formattedToday = dd + '-' + mm + '-' + yyyy;
+
 const userAdd = async (req, resp) => {
     let { name, email, mobile, prize, resultPrizeVal } = req.body;
     // console.log( name, email, mobile, prize )
@@ -13,21 +24,22 @@ const userAdd = async (req, resp) => {
         if (user) {
             responseType.message = 'Error! Email is already in use.';
             responseType.status = 403;
-            
+
         } else {
             let data = new Users.users({
                 name,
                 email,
                 mobile,
                 prize,
-                resultPrizeVal
+                resultPrizeVal,
+                date:`${formattedToday}`,
             });
             let response = await data.save();
-           
+
             responseType.message = 'Register Succesfully ';
             responseType.status = 200;
             responseType.data = response;
-           
+
         }
         resp.status(responseType.status).json(responseType);
     }
@@ -36,43 +48,44 @@ const userAdd = async (req, resp) => {
 
 const userList = async (req, res) => {
 
-    let data = await Users.users.find({resultPrizeVal:1});
-    if(!data){
-        res.status(400).json({"status":"400","message":"data not found"});
+    let data = await Users.users.find({ resultPrizeVal: 1 });
+    // let data = await Users.users.find();
+    if (!data) {
+        res.status(400).json({ "status": "400", "message": "data not found" });
     }
-    else{
-        res.status(200).json({"status":"200","message":data});
+    else {
+        res.status(200).json({ "status": "200", "message": data });
     }
-  
+
 }
 
-const spindata = async (req, res) =>{
+const spindata = async (req, res) => {
     let { totalSpin, totalWinner } = req.body;
-    console.log( totalSpin, totalWinner );
-    if(!totalSpin || !totalWinner){
+    console.log(totalSpin, totalWinner);
+    if (!totalSpin || !totalWinner) {
         res.status(400).json({ message: 'Error! please enter totalSpin, totalWinner', status: 400 });
     }
-    else{
+    else {
         var responseType = {
             message: 'ok'
         }
-        let data = await Users.spin.findOneAndUpdate({totalSpin:totalSpin, totalWinner:totalWinner});
+        let data = await Users.spin.findOneAndUpdate({ totalSpin: totalSpin, totalWinner: totalWinner });
         let response = await data.save();
         // let totalsp =data[0].totalSpin; 
         // let totalwn = data[0].totalWinner;
 
         // let response = await data.save();
-        res.status(200).json({"status":"200","message":"ok","response":response});
+        res.status(200).json({ "status": "200", "message": "ok", "response": response });
     }
 }
 
 const spindatalist = async (req, res) => {
     let data = await Users.spin.find();
-    if(!data){
-        res.status(400).json({"status":"400","message":"data not found"});
+    if (!data) {
+        res.status(400).json({ "status": "400", "message": "data not found" });
     }
-    else{
-        res.status(200).json({"status":"200","message":data});
+    else {
+        res.status(200).json({ "status": "200", "message": data });
     }
 }
 
@@ -93,7 +106,7 @@ const spinadmin = async (req, res) => {
             responseType.message = 'Wrong Password';
             responseType.status = 401;
         }
-    } 
+    }
     else {
         responseType.message = 'Invalid Email id';
         responseType.status = 404;
@@ -101,10 +114,19 @@ const spinadmin = async (req, res) => {
     res.status(responseType.status).json({ message: 'ok', data: responseType });
 }
 
+const spinrandomwin = async (req, res) => {
+    let data = await Users.users.find({ resultPrizeVal: 1, date: formattedToday });
+    if (!data) {
+        res.status(400).json({ "status": "400", "message": "data not found" });
+    }
+    else {
+        res.status(200).json({ "status": "200", "message": data });
+    }
+}
 
 
 
 
 module.exports = {
-    userAdd, userList, spindata, spindatalist, spinadmin
+    userAdd, userList, spindata, spindatalist, spinadmin, spinrandomwin
 }

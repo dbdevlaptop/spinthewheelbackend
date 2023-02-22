@@ -1,6 +1,5 @@
 const Users = require('../models/users');
 
-
 let today = new Date();
 let yyyy = today.getFullYear();
 let mm = today.getMonth() + 1; // Months start at 0!
@@ -18,12 +17,8 @@ const userAdd = async (req, resp) => {
         resp.status(400).json({ message: 'Error! please enter email, name , mobile', status: 400 });
     } else {
         let user = await Users.users.findOne({ email: req.body.email });
-        var responseType = {
-            message: 'ok'
-        }
         if (user) {
-            responseType.message = 'Error! Email is already in use.';
-            responseType.status = 403;
+            resp.status(403).json({ message: 'Error! Email is already in use.', status: 403 });
 
         } else {
             let data = new Users.users({
@@ -32,18 +27,29 @@ const userAdd = async (req, resp) => {
                 mobile,
                 prize,
                 resultPrizeVal,
-                date:`${formattedToday}`,
+                date: `${formattedToday}`,
             });
             let response = await data.save();
-
-            responseType.message = 'Register Succesfully ';
-            responseType.status = 200;
-            responseType.data = response;
+            resp.status(200).json({ message: 'Register Succesfully ', status: 403, data: response });
 
         }
-        resp.status(responseType.status).json(responseType);
     }
+}
 
+const userCheck = async (req, resp) => {
+    let { name, email, mobile } = req.body;
+    // console.log( name, email, mobile, prize )
+    if (!email || !name || !mobile) {
+        resp.status(400).json({ message: 'Error! please enter email, name , mobile', status: 400 });
+    } else {
+        let user = await Users.users.findOne({ email: req.body.email });
+        if (user) {
+            resp.status(403).json({ message: 'Error! Email is already in use.', status: 403 });
+
+        } else {
+            resp.status(200).json({ message: 'Register Succesfully ', status: 200});
+        }
+    }
 }
 
 const userList = async (req, res) => {
@@ -127,6 +133,7 @@ const spinrandomwin = async (req, res) => {
 
 
 
+
 module.exports = {
-    userAdd, userList, spindata, spindatalist, spinadmin, spinrandomwin
+    userAdd, userList, spindata, spindatalist, spinadmin, spinrandomwin, userCheck
 }

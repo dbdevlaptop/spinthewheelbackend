@@ -21,7 +21,7 @@ router.get('/', (req , resp)=>{
 
 
 router.post('/add', userCtrl.userAdd);
-
+router.post('/check', userCtrl.userCheck);
 router.get('/list', userCtrl.userList);
 
 router.post('/spindata', userCtrl.spindata);

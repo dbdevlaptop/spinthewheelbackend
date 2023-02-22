@@ -12,7 +12,7 @@ let formattedToday = dd + '-' + mm + '-' + yyyy;
 
 const userAdd = async (req, resp) => {
     let { name, email, mobile, prize, resultPrizeVal } = req.body;
-    // console.log( name, email, mobile, prize )
+    console.log( name, email, mobile, prize, resultPrizeVal )
     if (!email || !name || !mobile) {
         resp.status(400).json({ message: 'Error! please enter email, name , mobile', status: 400 });
     } else {
@@ -30,7 +30,7 @@ const userAdd = async (req, resp) => {
                 date: `${formattedToday}`,
             });
             let response = await data.save();
-            resp.status(200).json({ message: 'Register Succesfully ', status: 403, data: response });
+            resp.status(200).json({ message: 'Register Succesfully ', status: 200, data: response });
 
         }
     }
@@ -38,7 +38,7 @@ const userAdd = async (req, resp) => {
 
 const userCheck = async (req, resp) => {
     let { name, email, mobile } = req.body;
-    // console.log( name, email, mobile, prize )
+    // console.log( name, email, mobile )
     if (!email || !name || !mobile) {
         resp.status(400).json({ message: 'Error! please enter email, name , mobile', status: 400 });
     } else {

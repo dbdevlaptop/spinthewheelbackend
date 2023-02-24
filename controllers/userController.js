@@ -122,11 +122,18 @@ const spinadmin = async (req, res) => {
 
 const spinrandomwin = async (req, res) => {
     let data = await Users.users.find({ resultPrizeVal: 1, date: formattedToday });
+
+    let thomsonwinCount = (await Users.users.find({ prize: 'You won Thomson goodies !' })).length;
+    let kodakwinCount = (await Users.users.find({ prize: 'You won Kodak goodies !' })).length;
+    let blauwinCount = (await Users.users.find({ prize: 'You won Blaupunkt goodies !' })).length;
+   
+    // console.log(data);
     if (!data) {
         res.status(400).json({ "status": "400", "message": "data not found" });
     }
     else {
-        res.status(200).json({ "status": "200", "message": data });
+        res.status(200).json({ "status": "200", "message": data, "thomsonwinCount" : thomsonwinCount, "kodakwinCount" : kodakwinCount,
+        "blauwinCount" : blauwinCount});
     }
 }
 

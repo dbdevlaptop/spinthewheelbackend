@@ -88,9 +88,9 @@ const spindata = async (req, res) => {
 const spindatalist = async (req, res) => {
     let data = await Users.spin.find();
 
-    let thomsonwinCount = (await Users.users.find({ prize: 'You won Thomson goodies !' })).length;
-    let kodakwinCount = (await Users.users.find({ prize: 'You won Kodak goodies !' })).length;
-    let blauwinCount = (await Users.users.find({ prize: 'You won Blaupunkt goodies !' })).length;
+    let thomsonwinCount = (await Users.users.find({ date: formattedToday, prize: 'You won Thomson goodies !' })).length;
+    let kodakwinCount = (await Users.users.find({ date: formattedToday, prize: 'You won Kodak goodies !' })).length;
+    let blauwinCount = (await Users.users.find({ date: formattedToday, prize: 'You won Blaupunkt goodies !' })).length;
 
     // let thomsonwinCount = 50;
     // let kodakwinCount = 25;

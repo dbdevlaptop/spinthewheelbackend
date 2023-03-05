@@ -37,9 +37,9 @@ const userAdd = async (req, resp) => {
 }
 
 const userCheck = async (req, resp) => {
-    let { name, email, mobile } = req.body;
+    let { name, email} = req.body;
     // console.log( name, email, mobile )
-    if (!email || !name || !mobile) {
+    if (!email || !name) {
         resp.status(400).json({ message: 'Error! please enter email, name , mobile', status: 400 });
     } else {
         let user = await Users.users.findOne({ email: req.body.email });
